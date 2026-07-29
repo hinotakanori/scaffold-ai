@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="アイデアを実装可能な開発計画に変換するScaffold AI" />
+    <title>Scaffold AI — アイデアから開発計画へ</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Scaffold AI ホーム">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>Scaffold AI</span>
+      </a>
+      <div class="status-pill"><span></span> Local MVP</div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <p class="eyebrow">PRODUCT PLANNING, SIMPLIFIED</p>
+        <h1>曖昧なアイデアを、<br /><em>つくれる計画</em>に。</h1>
+        <p class="hero-copy">作りたいものを数行で説明してください。画面、データ、API、タスクまで、一貫した開発設計に整理します。</p>
+      </section>
+
+      <section class="workspace" aria-label="プラン作成">
+        <form id="idea-form" class="idea-panel">
+          <div class="section-number">01 — IDEA</div>
+          <label for="project-name">プロジェクト名</label>
+          <input id="project-name" name="projectName" maxlength="80" placeholder="例：地域の小さなイベント検索" required />
+
+          <label for="idea">どんなサービスを作りますか？</label>
+          <textarea id="idea" name="idea" rows="7" maxlength="1200" placeholder="対象ユーザー、解決したい課題、主な機能を自由に書いてください。" required></textarea>
+          <div class="field-meta"><span>具体的に書くほど精度が上がります</span><span id="idea-count">0 / 1200</span></div>
+
+          <div class="field-grid">
+            <div>
+              <label for="audience">主な利用者</label>
+              <input id="audience" name="audience" maxlength="120" placeholder="例：地域の子育て世帯" />
+            </div>
+            <div>
+              <label for="platform">提供形態</label>
+              <select id="platform" name="platform">
+                <option value="web">Webアプリ</option>
+                <option value="mobile">モバイルアプリ</option>
+                <option value="internal">社内ツール</option>
+                <option value="api">APIサービス</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="primary-button" type="submit"><span>プランを生成</span><span aria-hidden="true">→</span></button>
+          <p class="privacy-note">入力内容は外部へ送信されず、このブラウザ内だけで処理されます。</p>
+        </form>
+
+        <aside class="preview-panel">
+          <div class="section-number">02 — OUTPUT</div>
+          <div id="empty-state" class="empty-state">
+            <div class="blueprint" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+            <h2>計画の骨組みが<br />ここに現れます</h2>
+            <p>生成後は各セクションを直接編集し、JSONまたはMarkdownで保存できます。</p>
+          </div>
+          <div id="result" class="result" hidden>
+            <div class="result-header">
+              <div><p class="result-kicker">GENERATED PLAN</p><h2 id="result-title"></h2></div>
+              <button id="reset-button" class="text-button" type="button">新規作成</button>
+            </div>
+            <div id="result-sections"></div>
+            <div class="result-actions">
+              <button id="save-button" class="secondary-button" type="button">ブラウザに保存</button>
+              <button id="markdown-button" class="secondary-button" type="button">Markdown</button>
+              <button id="json-button" class="secondary-button" type="button">JSON</button>
+            </div>
+            <p id="feedback" class="feedback" role="status"></p>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <footer><span>Scaffold AI MVP</span><span>Plan with clarity. Build with confidence.</span></footer>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

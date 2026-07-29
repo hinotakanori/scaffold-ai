@@ -1,57 +1,63 @@
 # Scaffold AI
 
-AI-powered scaffold planning platform.
+Scaffold AI turns an early product idea into an editable, structured development plan.
 
-Scaffold AI turns a short product idea into a structured development plan. The
-planned MVP will generate a product brief, screen map, data model, API outline,
-and prioritized implementation tasks from a user's description.
+## MVP features
 
-## Status
+- Japanese product-idea input form
+- Structured plan generation covering summary, user stories, screens, data, API, tasks, and risks
+- Direct editing of every generated section
+- Browser-local save and restore
+- Markdown and JSON export
+- Responsive layout with no build step or external runtime dependency
+- Automated tests for the planning and export logic
 
-This repository is in the planning and foundation phase. Application code has
-not been implemented yet. The current focus is validating the MVP scope and
-choosing the initial technology stack.
+The current MVP uses a deterministic local planning engine. It does not send input to an external AI service. The generation interface is isolated in `planner.mjs` so a server-side AI provider can replace it later without changing the page workflow.
 
-## Planned MVP
+## Run locally
 
-- Accept a product or application idea
-- Ask for essential missing requirements
-- Generate a structured project plan
-- Present screens, data entities, API endpoints, and development tasks
-- Export the generated plan in Markdown and JSON
-- Save and revisit generated projects
+Requirements: Python 3 (for the local static server). Node.js is required only for tests.
 
-See [docs/product-requirements.md](docs/product-requirements.md) for the initial
-requirements and acceptance criteria.
+```bash
+python3 -m http.server 4173
+```
 
-## Repository structure
+Then open `http://localhost:4173`.
+
+## Test
+
+```bash
+npm test
+```
+
+## Structure
 
 ```text
 .
-├── docs/
-│   └── product-requirements.md
-├── .env.example
-├── .gitignore
-├── LICENSE
+├── docs/product-requirements.md
+├── tests/planner.test.mjs
+├── app.js
+├── index.html
+├── planner.mjs
+├── styles.css
+├── package.json
 └── README.md
 ```
 
-Application directories and setup commands will be added after the technology
-stack is selected. Do not add real credentials to `.env.example` or commit a
-local `.env` file.
+## Security and privacy
 
-## Next steps
+- The MVP processes input locally in the browser.
+- Saved projects use browser `localStorage`.
+- No API key is required or included.
+- Do not commit local `.env` files or credentials.
 
-1. Confirm the target user and primary use case.
-2. Choose the web framework, AI provider, database, and deployment platform.
-3. Define the generated-plan JSON schema.
-4. Build the idea input and generated-plan result screens.
-5. Add automated tests and continuous integration.
+## Next development steps
 
-## Contributing
-
-Please open an issue before starting a large change. Keep pull requests focused
-and include tests once application code is introduced.
+1. Add a versioned JSON Schema and validate every generated plan.
+2. Introduce a server endpoint for an AI provider with strict structured output.
+3. Add persistent projects and authentication.
+4. Add browser-level accessibility and export tests.
+5. Add continuous integration and deployment.
 
 ## License
 

@@ -1,29 +1,7 @@
-# Dependencies
 node_modules/
-
-# Framework build output
-.next/
-out/
-dist/
-build/
-
-# Environment files
 .env
 .env.*
 !.env.example
-
-# Test and coverage output
 coverage/
-playwright-report/
-test-results/
-
-# Logs
 *.log
-
-# Editor and operating-system files
 .DS_Store
-.idea/
-.vscode/
-
-# Local tooling
-.turbo/
