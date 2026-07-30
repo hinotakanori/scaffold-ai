@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/hinotakanori/scaffold-ai/schemas/plan.schema.json",
+  "title": "Scaffold AI Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "projectName", "createdAt", "input", "sections"],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "projectName": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["idea", "audience", "platform"],
+      "properties": {
+        "idea": { "type": "string", "minLength": 1, "maxLength": 1200 },
+        "audience": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "platform": { "type": "string", "minLength": 1 }
+      }
+    },
+    "sections": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "userStories", "screens", "data", "api", "tasks", "risks"],
+      "properties": {
+        "summary": { "type": "string", "minLength": 1 },
+        "userStories": { "type": "string", "minLength": 1 },
+        "screens": { "type": "string", "minLength": 1 },
+        "data": { "type": "string", "minLength": 1 },
+        "api": { "type": "string", "minLength": 1 },
+        "tasks": { "type": "string", "minLength": 1 },
+        "risks": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
