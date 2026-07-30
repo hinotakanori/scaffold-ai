@@ -9,19 +9,23 @@ Scaffold AI turns an early product idea into an editable, structured development
 - Direct editing of every generated section
 - Browser-local save and restore
 - Markdown and JSON export
-- Responsive layout with no build step or external runtime dependency
+- OpenAI Responses API integration with strict structured output
+- Automatic local-generation fallback when the AI endpoint is unavailable
+- Responsive layout with no frontend build step
 - Automated tests for the planning and export logic
 - Versioned JSON Schema and runtime output validation
 - GitHub Actions continuous integration
 
-The current MVP uses a deterministic local planning engine. It does not send input to an external AI service. The generation interface is isolated in `planner.mjs` so a server-side AI provider can replace it later without changing the page workflow.
+The Node server uses the OpenAI Responses API when `OPENAI_API_KEY` is configured. The API key remains server-side. If the endpoint is unavailable—such as on the static GitHub Pages deployment—the browser automatically uses the deterministic local planner.
 
 ## Run locally
 
-Requirements: Python 3 (for the local static server). Node.js is required only for tests.
+Requirements: Node.js 18 or later.
 
 ```bash
-python3 -m http.server 4173
+cp .env.example .env
+# Add OPENAI_API_KEY to .env, then:
+npm run dev
 ```
 
 Then open `http://localhost:4173`.
@@ -39,9 +43,12 @@ npm test
 ├── docs/product-requirements.md
 ├── schemas/plan.schema.json
 ├── tests/planner.test.mjs
+├── tests/ai-planner.test.mjs
+├── ai-planner.mjs
 ├── app.js
 ├── index.html
 ├── planner.mjs
+├── server.mjs
 ├── styles.css
 ├── package.json
 └── README.md
@@ -49,15 +56,15 @@ npm test
 
 ## Security and privacy
 
-- The MVP processes input locally in the browser.
+- AI input is sent to OpenAI only through the server endpoint.
 - Saved projects use browser `localStorage`.
-- No API key is required or included.
+- The API key is never sent to the browser or included in exports.
 - Do not commit local `.env` files or credentials.
 
 ## Next development steps
 
-1. Introduce a server endpoint for an AI provider with strict structured output.
-2. Add persistent projects and authentication.
+1. Deploy the Node server to a host with secret management.
+2. Add rate limiting, persistent projects, and authentication.
 3. Add browser-level accessibility and export tests.
 4. Add continuous deployment for the static MVP.
 

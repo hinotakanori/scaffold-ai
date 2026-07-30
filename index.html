@@ -13,7 +13,7 @@
         <span class="brand-mark" aria-hidden="true">S</span>
         <span>Scaffold AI</span>
       </a>
-      <div class="status-pill"><span></span> Local MVP</div>
+      <div class="status-pill"><span></span> AI + Local fallback</div>
     </header>
 
     <main id="top">
@@ -50,7 +50,7 @@
           </div>
 
           <button class="primary-button" type="submit"><span>プランを生成</span><span aria-hidden="true">→</span></button>
-          <p class="privacy-note">入力内容は外部へ送信されず、このブラウザ内だけで処理されます。</p>
+          <p class="privacy-note">AIサーバーが有効な場合、入力内容はプラン生成のためOpenAIへ送信されます。接続できない場合はブラウザ内で生成します。</p>
         </form>
 
         <aside class="preview-panel">

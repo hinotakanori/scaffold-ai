@@ -12,16 +12,37 @@ let currentPlan = null;
 
 idea.addEventListener("input", () => { counter.textContent = `${idea.value.length} / 1200`; });
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  const submitButton = form.querySelector('button[type="submit"]');
+  submitButton.disabled = true;
+  feedback.textContent = "AIが開発計画を作成しています…";
   try {
+    const values = Object.fromEntries(new FormData(form));
+    const response = await fetch("./api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...values, platform: platformLabel(values.platform) })
+    });
+    if (!response.ok) throw new Error("AI endpoint unavailable");
+    const payload = await response.json();
+    if (!validatePlan(payload.plan).valid) throw new Error("Invalid AI plan");
+    currentPlan = payload.plan;
+    renderPlan();
+    feedback.textContent = "AIがプランを生成しました。各項目は直接編集できます。";
+  } catch {
     const values = Object.fromEntries(new FormData(form));
     currentPlan = generatePlan(values);
     renderPlan();
-  } catch {
-    feedback.textContent = "プランを生成できませんでした。入力内容を確認してください。";
+    feedback.textContent = "AIに接続できなかったため、ローカル生成でプランを作成しました。";
+  } finally {
+    submitButton.disabled = false;
   }
 });
+
+function platformLabel(value) {
+  return { web: "Webアプリ", mobile: "モバイルアプリ", internal: "社内ツール", api: "APIサービス" }[value] || "Webアプリ";
+}
 
 function renderPlan() {
   emptyState.hidden = true;
