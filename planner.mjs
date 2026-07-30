@@ -21,7 +21,7 @@ export function generatePlan(input) {
   const audience = clean(input.audience, "想定する主要ユーザー");
   const platform = platformNames[input.platform] || platformNames.web;
 
-  return {
+  const plan = {
     schemaVersion: "1.0",
     projectName: name,
     createdAt: new Date().toISOString(),
@@ -36,6 +36,28 @@ export function generatePlan(input) {
       risks: `・中心となる利用価値を1文で説明できるか\n・最初のユーザーは誰で、どこで獲得するか\n・保存する個人情報を最小化できるか\n・生成結果の正しさを誰がどの基準で確認するか`
     }
   };
+  const validation = validatePlan(plan);
+  if (!validation.valid) throw new Error(`Invalid generated plan: ${validation.errors.join(", ")}`);
+  return plan;
+}
+
+export function validatePlan(plan) {
+  const errors = [];
+  if (!plan || typeof plan !== "object" || Array.isArray(plan)) {
+    return { valid: false, errors: ["plan must be an object"] };
+  }
+  if (plan.schemaVersion !== "1.0") errors.push("schemaVersion must be 1.0");
+  if (typeof plan.projectName !== "string" || !plan.projectName.trim()) errors.push("projectName is required");
+  if (typeof plan.createdAt !== "string" || Number.isNaN(Date.parse(plan.createdAt))) errors.push("createdAt must be an ISO date");
+  if (!plan.input || typeof plan.input !== "object") errors.push("input is required");
+  if (!plan.sections || typeof plan.sections !== "object") {
+    errors.push("sections is required");
+  } else {
+    for (const key of Object.keys(sectionLabels)) {
+      if (typeof plan.sections[key] !== "string" || !plan.sections[key].trim()) errors.push(`sections.${key} is required`);
+    }
+  }
+  return { valid: errors.length === 0, errors };
 }
 
 export function planToMarkdown(plan) {

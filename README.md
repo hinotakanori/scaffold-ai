@@ -11,6 +11,8 @@ Scaffold AI turns an early product idea into an editable, structured development
 - Markdown and JSON export
 - Responsive layout with no build step or external runtime dependency
 - Automated tests for the planning and export logic
+- Versioned JSON Schema and runtime output validation
+- GitHub Actions continuous integration
 
 The current MVP uses a deterministic local planning engine. It does not send input to an external AI service. The generation interface is isolated in `planner.mjs` so a server-side AI provider can replace it later without changing the page workflow.
 
@@ -35,6 +37,7 @@ npm test
 ```text
 .
 ├── docs/product-requirements.md
+├── schemas/plan.schema.json
 ├── tests/planner.test.mjs
 ├── app.js
 ├── index.html
@@ -53,11 +56,10 @@ npm test
 
 ## Next development steps
 
-1. Add a versioned JSON Schema and validate every generated plan.
-2. Introduce a server endpoint for an AI provider with strict structured output.
-3. Add persistent projects and authentication.
-4. Add browser-level accessibility and export tests.
-5. Add continuous integration and deployment.
+1. Introduce a server endpoint for an AI provider with strict structured output.
+2. Add persistent projects and authentication.
+3. Add browser-level accessibility and export tests.
+4. Add continuous deployment for the static MVP.
 
 ## License
 

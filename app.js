@@ -1,4 +1,4 @@
-import { generatePlan, planToMarkdown, safeFilename, sectionLabels } from "./planner.mjs";
+import { generatePlan, planToMarkdown, safeFilename, sectionLabels, validatePlan } from "./planner.mjs";
 
 const form = document.querySelector("#idea-form");
 const idea = document.querySelector("#idea");
@@ -14,9 +14,13 @@ idea.addEventListener("input", () => { counter.textContent = `${idea.value.lengt
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  const values = Object.fromEntries(new FormData(form));
-  currentPlan = generatePlan(values);
-  renderPlan();
+  try {
+    const values = Object.fromEntries(new FormData(form));
+    currentPlan = generatePlan(values);
+    renderPlan();
+  } catch {
+    feedback.textContent = "プランを生成できませんでした。入力内容を確認してください。";
+  }
 });
 
 function renderPlan() {
@@ -77,7 +81,7 @@ function download(content, filename, type) {
 
 try {
   const saved = JSON.parse(localStorage.getItem("scaffold-ai:last-plan"));
-  if (saved?.schemaVersion === "1.0" && saved?.sections) {
+  if (validatePlan(saved).valid) {
     currentPlan = saved;
     renderPlan();
     feedback.textContent = "前回保存したプランを復元しました。";
